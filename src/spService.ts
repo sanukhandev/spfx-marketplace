@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { sp } from "@pnp/sp/presets/all";
+import { IItemAddResult, sp } from "@pnp/sp/presets/all";
 export interface IImage {
   FileLeafRef: string;
   PostID: number;
@@ -16,20 +16,18 @@ class SpService {
 
   public async createItem(item: {
     Title: string;
-    Price: number;
-    Description: string;
-    Location: string;
-    SellerName: string;
-    DatePosted: string;
     Category: string;
-  }): Promise<void> {
+    Price: string | number;
+    Location: string;
+    Description: string;
+  }): Promise<IItemAddResult> {
     try {
-      await sp.web.lists
+      return sp.web.lists
         .getByTitle(this.BUYSELLITEMS_LIST_TITLE)
         .items.add(item);
-      console.log("Item added successfully!");
     } catch (error) {
       console.error("Error adding item:", error);
+      throw error;
     }
   }
 
@@ -55,6 +53,35 @@ class SpService {
     } catch (error) {
       console.error("Error fetching items:", error);
       throw error;
+    }
+  }
+
+  public async uploadImage(
+    fileName: string,
+    fileArrayBuffer: ArrayBuffer,
+    postId: number
+  ): Promise<void> {
+    const uploadedFile = await sp.web
+      .getFolderByServerRelativeUrl("/sites/DemoIntranet/BuySellItemsImages")
+      .files.add(fileName, fileArrayBuffer, true);
+
+    const listItemFields = await uploadedFile.file.listItemAllFields();
+    const itemId = listItemFields.ID;
+
+    await sp.web.lists
+      .getByTitle("BuySellItemsImages")
+      .items.getById(itemId)
+      .update({
+        PostID: postId,
+      });
+  }
+
+  uploadImages(ID: any, images: File[]): void {
+    if (images.length > 0) {
+      images.forEach(async (image) => {
+        const fileArrayBuffer = await image.arrayBuffer();
+        await this.uploadImage(image.name, fileArrayBuffer, ID);
+      });
     }
   }
 

@@ -7,6 +7,7 @@ import {
   faArrowRight,
   faRefresh,
 } from "@fortawesome/free-solid-svg-icons";
+import CreateProductForm from "./CreateProductForm";
 
 interface IMarketPlaceFilterProps {
   onSearch: (searchTerm: string) => void;
@@ -18,6 +19,7 @@ interface IMarketPlaceFilterProps {
 interface IMarketPlaceFilterState {
   searchTerm: string;
   sortBy: string;
+  isModalOpen: boolean;
 }
 
 const categories = [
@@ -39,6 +41,7 @@ export default class MarketPlaceFilter extends React.Component<
     this.state = {
       searchTerm: "",
       sortBy: "",
+      isModalOpen: false,
     };
 
     this.handleSearch = this.handleSearch.bind(this);
@@ -63,11 +66,23 @@ export default class MarketPlaceFilter extends React.Component<
     this.props.onReset();
   }
 
+  handleOpenModal = (): void => {
+    this.setState({ isModalOpen: true });
+  };
+
+  handleCloseModal = (): void => {
+    this.setState({ isModalOpen: false });
+  };
+
   render(): JSX.Element {
+    const { isModalOpen } = this.state;
     return (
       <div className="bg-white p-6 rounded-lg shadow-md w-64">
         <h2 className="font-bold text-lg mb-4">Marker Palce</h2>
-        <button className="w-full bg-blue-700 text-white py-2 rounded-lg mb-6 flex items-center justify-center">
+        <button
+          onClick={this.handleOpenModal}
+          className="w-full bg-blue-700 text-white py-2 rounded-lg mb-6 flex items-center justify-center"
+        >
           <FontAwesomeIcon icon={faPlus} className="mr-2" />
           Sell Something
         </button>
@@ -126,6 +141,7 @@ export default class MarketPlaceFilter extends React.Component<
             Reset
           </button>
         </div>
+        {isModalOpen && <CreateProductForm onClose={this.handleCloseModal} />}
       </div>
     );
   }
