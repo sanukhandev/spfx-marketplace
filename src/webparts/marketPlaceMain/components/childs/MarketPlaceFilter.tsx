@@ -5,6 +5,7 @@ import {
   faPlus,
   faSort,
   faArrowRight,
+  faRefresh,
 } from "@fortawesome/free-solid-svg-icons";
 
 interface IMarketPlaceFilterProps {
@@ -21,11 +22,11 @@ interface IMarketPlaceFilterState {
 
 const categories = [
   "Vehicle",
-  "Electronics",
-  "Furniture",
-  "Sports",
-  "Music & Hobbies",
-  "Software",
+  "Gadgets",
+  "Apartment",
+  "Others",
+  "Choice 6",
+  "Rental",
 ];
 
 export default class MarketPlaceFilter extends React.Component<
@@ -117,6 +118,13 @@ export default class MarketPlaceFilter extends React.Component<
               </li>
             ))}
           </ul>
+          <button
+            className="w-full bg-red-400 text-black py-2 mb-2 mt-2 rounded-lg  flex items-center justify-center"
+            onClick={this.handleReset}
+          >
+            <FontAwesomeIcon icon={faRefresh} className="mr-2" />
+            Reset
+          </button>
         </div>
       </div>
     );

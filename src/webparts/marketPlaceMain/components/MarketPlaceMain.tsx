@@ -40,6 +40,7 @@ export default class MarketPlaceMain extends React.Component<
     // Binding methods to ensure proper context
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSort = this.handleSort.bind(this);
+    this.handleReset = this.handleReset.bind(this);
     this.handleFilterByCategory = this.handleFilterByCategory.bind(this);
   }
 
@@ -122,6 +123,9 @@ export default class MarketPlaceMain extends React.Component<
     this.setState({ filteredItems: sortedItems });
   }
 
+  handleReset(): void {
+    this.setState({ filteredItems: this.state.items });
+  }
   // Category Filter Handler
   handleFilterByCategory(category: string): void {
     const filteredItems = this.state.items.filter(
@@ -137,7 +141,7 @@ export default class MarketPlaceMain extends React.Component<
         <MarketPlaceFilter
           onSearch={this.handleSearch}
           onSort={this.handleSort}
-          onReset={this.loadPostsAndImages}
+          onReset={this.handleReset}
           onFilterByCategory={this.handleFilterByCategory}
         />
         <div className="p-4 flex-1">
