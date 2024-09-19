@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "marketplace-client-side-solution",
+    "id": "d0b0ec1f-eeea-453d-9c6c-561a9f18cf61",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.19.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "marketplace description"
+      },
+      "longDescription": {
+        "default": "marketplace description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "marketplace Feature",
+        "description": "The feature that activates elements of the marketplace solution.",
+        "id": "16ec1c96-552e-48b6-b50f-4245c3609975",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/marketplace.sppkg"
+  }
+}

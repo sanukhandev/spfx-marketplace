@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "market-place-main-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/marketPlaceMain/MarketPlaceMainWebPart.js",
+          "manifest": "./src/webparts/marketPlaceMain/MarketPlaceMainWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "MarketPlaceMainWebPartStrings": "lib/webparts/marketPlaceMain/loc/{locale}.js"
+  }
+}
