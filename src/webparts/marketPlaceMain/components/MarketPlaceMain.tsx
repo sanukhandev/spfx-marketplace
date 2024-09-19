@@ -6,22 +6,23 @@ import { spService } from "../../../spService";
 import MarketPlaceCard from "./childs/MarketPlaceCard";
 import MarketPlaceFilter from "./childs/MarketPlaceFilter";
 
-interface IMarketPlaceMainState {
-  items: Array<{
+export interface item {
+  Title: string;
+  Price: number;
+  avatar: string;
+  Description: string;
+  Location: string;
+  DatePosted: string;
+  Category: string;
+  PostedBy: {
     Title: string;
-    Price: number;
-    avatar: string;
-    Description: string;
-    Location: string;
-    DatePosted: string;
-    Category: string;
-    PostedBy: {
-      Title: string;
-      EMail: string;
-    };
-    Images: string[];
-  }>;
-  filteredItems: Array<any>;
+    EMail: string;
+  };
+  Images: string[];
+}
+interface IMarketPlaceMainState {
+  items: Array<item>;
+  filteredItems: Array<item>;
 }
 
 export default class MarketPlaceMain extends React.Component<
@@ -84,14 +85,10 @@ export default class MarketPlaceMain extends React.Component<
         };
       });
 
-      // Update the state with posts and their images
       this.setState({
         items: postsWithDetails,
         filteredItems: postsWithDetails,
       });
-      console.log("====================================");
-      console.log("postsWithDetails", postsWithDetails);
-      console.log("====================================");
     } catch (error) {
       console.error("Error loading posts and images: ", error);
     }
@@ -135,32 +132,36 @@ export default class MarketPlaceMain extends React.Component<
 
   public render(): React.ReactElement<IMarketPlaceMainProps> {
     const { filteredItems } = this.state;
-
     return (
       <div className="flex">
-        {/* Filter Sidebar */}
         <MarketPlaceFilter
           onSearch={this.handleSearch}
           onSort={this.handleSort}
+          onReset={this.loadPostsAndImages}
           onFilterByCategory={this.handleFilterByCategory}
         />
-
-        {/* Cards Display */}
         <div className="p-4 flex-1">
           <h1 className="text-xl font-bold mb-4">MarketPlace Items</h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredItems.map((item, index) => (
-              <MarketPlaceCard
-                key={index}
-                title={item.Title}
-                price={item.Price}
-                description={item.Description}
-                images={item.Images}
-                postedBy={item.PostedBy}
-                avatar={item.avatar}
-                location={item.Location}
-              />
-            ))}
+          <div className="overflow-y-auto">
+            {filteredItems.length > 0 ? (
+              <div className="space-y-4">
+                {" "}
+                {filteredItems.map((item, index) => (
+                  <MarketPlaceCard
+                    key={index}
+                    title={item.Title}
+                    price={item.Price}
+                    description={item.Description}
+                    images={item.Images}
+                    postedBy={item.PostedBy}
+                    avatar={item.avatar}
+                    location={item.Location}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p>No items found</p>
+            )}
           </div>
         </div>
       </div>
