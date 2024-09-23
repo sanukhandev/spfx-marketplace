@@ -1,8 +1,8 @@
 import * as React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faChevronCircleLeft,
-  faChevronCircleRight,
+  faChevronLeft,
+  faChevronRight,
   faEnvelope,
   faTimes,
   faVideo,
@@ -98,13 +98,13 @@ export default class ProductModal extends React.Component<
                     className="absolute top-1/2 left-2 text-white bg-black bg-opacity-50 rounded-full px-2 py-1"
                     onClick={this.handlePrevImage}
                   >
-                    <FontAwesomeIcon icon={faChevronCircleLeft} />
+                    <FontAwesomeIcon icon={faChevronLeft} />
                   </button>
                   <button
                     className="absolute top-1/2 right-2 text-white bg-black bg-opacity-50 rounded-full px-2 py-1"
                     onClick={this.handleNextImage}
                   >
-                    <FontAwesomeIcon icon={faChevronCircleRight} />
+                    <FontAwesomeIcon icon={faChevronRight} />
                   </button>
                 </>
               )}
