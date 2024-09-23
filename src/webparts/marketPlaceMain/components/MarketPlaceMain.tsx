@@ -5,6 +5,7 @@ import "../../../styles/dist/tailwind.css";
 import { spService } from "../../../spService";
 import MarketPlaceCard from "./childs/MarketPlaceCard";
 import MarketPlaceFilter from "./childs/MarketPlaceFilter";
+import ProductModal from "./childs/ProductModal";
 
 export interface item {
   Title: string;
@@ -23,6 +24,8 @@ export interface item {
 interface IMarketPlaceMainState {
   items: Array<item>;
   filteredItems: Array<item>;
+  isModalOpen: boolean;
+  selectedItem: item | undefined;
 }
 
 export default class MarketPlaceMain extends React.Component<
@@ -35,6 +38,8 @@ export default class MarketPlaceMain extends React.Component<
     this.state = {
       items: [],
       filteredItems: [],
+      isModalOpen: false,
+      selectedItem: undefined,
     };
 
     // Binding methods to ensure proper context
@@ -42,7 +47,9 @@ export default class MarketPlaceMain extends React.Component<
     this.handleSort = this.handleSort.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.handleFilterByCategory = this.handleFilterByCategory.bind(this);
-    // set the current user ID
+
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   // Grouping function for images by post ID
@@ -58,6 +65,14 @@ export default class MarketPlaceMain extends React.Component<
       result[group].push(item);
       return result;
     }, {});
+  }
+
+  openModal(item: any): void {
+    this.setState({ isModalOpen: true, selectedItem: item });
+  }
+
+  closeModal(): void {
+    this.setState({ isModalOpen: false, selectedItem: undefined });
   }
 
   // Load posts and images, associating images with posts
@@ -137,7 +152,7 @@ export default class MarketPlaceMain extends React.Component<
   }
 
   public render(): React.ReactElement<IMarketPlaceMainProps> {
-    const { filteredItems } = this.state;
+    const { filteredItems, isModalOpen, selectedItem } = this.state;
     return (
       <div className="flex">
         <MarketPlaceFilter
@@ -152,9 +167,9 @@ export default class MarketPlaceMain extends React.Component<
           <div className="overflow-y-auto">
             {filteredItems.length > 0 ? (
               <div className="space-y-4">
-                {" "}
                 {filteredItems.map((item, index) => (
                   <MarketPlaceCard
+                    onClick={() => this.openModal(item)}
                     key={index}
                     title={item.Title}
                     price={item.Price}
@@ -171,6 +186,18 @@ export default class MarketPlaceMain extends React.Component<
             )}
           </div>
         </div>
+        {isModalOpen && selectedItem && (
+          <ProductModal
+            title={selectedItem.Title}
+            price={selectedItem.Price}
+            description={selectedItem.Description}
+            images={selectedItem.Images}
+            postedBy={selectedItem.PostedBy}
+            avatar={selectedItem.avatar}
+            location={selectedItem.Location}
+            onClose={this.closeModal}
+          />
+        )}
       </div>
     );
   }

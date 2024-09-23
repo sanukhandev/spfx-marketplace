@@ -13,21 +13,27 @@ interface IMarketPlaceCardProps {
   };
   avatar: string;
   location: string;
+  onClick: () => void;
 }
 
 export default class MarketPlaceCard extends React.Component<IMarketPlaceCardProps> {
   constructor(props: IMarketPlaceCardProps) {
     super(props);
+    this.onClick = this.onClick.bind(this);
+  }
+
+  onClick(): void {
+    this.props.onClick();
   }
 
   render(): JSX.Element {
-    console.log("====================================");
-    console.log(this.props, "card");
-    console.log("====================================");
     const { title, price, images, postedBy, avatar, location } = this.props;
 
     return (
-      <div className="bg-white shadow-md rounded-lg overflow-hidden mb-2 mt-2">
+      <div
+        onClick={this.onClick}
+        className="bg-white shadow-md rounded-lg overflow-hidden mb-2 mt-2"
+      >
         <MarketPlaceImage images={images} title={title} />
         <div className="p-4">
           <p className="text-xl font-semibold text-blue-600 mb-1">
