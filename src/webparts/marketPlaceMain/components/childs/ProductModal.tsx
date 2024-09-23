@@ -1,4 +1,6 @@
 import * as React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faVideo } from "@fortawesome/free-solid-svg-icons"; // Email and Teams icons
 
 interface IProductModalProps {
   title: string;
@@ -66,7 +68,7 @@ export default class ProductModal extends React.Component<
 
     return (
       <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex justify-center items-center z-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 lg:w-2/3 max-h-full overflow-auto">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 lg:w-2/3 max-h-full overflow-auto relative">
           {/* Close button */}
           <button
             className="absolute top-4 right-4 text-gray-600"
@@ -76,39 +78,39 @@ export default class ProductModal extends React.Component<
           </button>
 
           {/* Images Carousel */}
-          <div className="relative">
-            {images.length > 0 && (
+          {images.length > 0 && (
+            <div className="relative">
               <img
                 src={images[currentImageIndex]}
                 alt={title}
-                className="w-full h-64 object-cover rounded-md mb-4"
+                className="w-full h-96 object-cover rounded-md mb-4"
               />
-            )}
 
-            {images.length > 1 && (
-              <>
-                <button
-                  className="absolute top-1/2 left-2 text-white bg-black bg-opacity-50 rounded-full px-2 py-1"
-                  onClick={this.handlePrevImage}
-                >
-                  ◀
-                </button>
-                <button
-                  className="absolute top-1/2 right-2 text-white bg-black bg-opacity-50 rounded-full px-2 py-1"
-                  onClick={this.handleNextImage}
-                >
-                  ▶
-                </button>
-              </>
-            )}
-          </div>
+              {images.length > 1 && (
+                <>
+                  <button
+                    className="absolute top-1/2 left-2 text-white bg-black bg-opacity-50 rounded-full px-2 py-1"
+                    onClick={this.handlePrevImage}
+                  >
+                    ◀
+                  </button>
+                  <button
+                    className="absolute top-1/2 right-2 text-white bg-black bg-opacity-50 rounded-full px-2 py-1"
+                    onClick={this.handleNextImage}
+                  >
+                    ▶
+                  </button>
+                </>
+              )}
+            </div>
+          )}
 
           {/* Product Info */}
           <div className="mb-4">
-            <span className="text-red-500 font-bold py-1 px-3 rounded">
+            <span className="text-red-500 font-bold py-1 px-3 rounded bg-red-100 inline-block mb-2">
               Vehicle
             </span>
-            <p className="text-blue-600 font-bold text-3xl mt-4">
+            <p className="text-blue-600 font-bold text-3xl">
               AED {price.toLocaleString()}
             </p>
             <h1 className="text-2xl font-semibold mt-2">{title}</h1>
@@ -121,32 +123,39 @@ export default class ProductModal extends React.Component<
             <p className="text-gray-700">{description}</p>
           </div>
 
-          {/* Additional Info */}
+          {/* Contact Information */}
           <div className="mt-6">
-            <h3 className="font-semibold text-lg">Additional Information:</h3>
-            <ul className="list-disc list-inside text-gray-700">
-              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-              <li>
-                Sed do eiusmod tempor incididunt ut labore et dolore magna
-                aliqua.
-              </li>
-              <li>
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                laboris nisi.
-              </li>
-            </ul>
-          </div>
+            <h3 className="font-semibold text-lg">Contact Information:</h3>
+            <div className="flex items-center mt-4">
+              <img
+                src={avatar}
+                alt={postedBy.Title}
+                className="w-10 h-10 rounded-full mr-3"
+              />
+              <div>
+                <p className="text-gray-900 font-medium">{postedBy.Title}</p>
+                <div className="flex items-center mt-2">
+                  {/* Email Icon */}
+                  <a
+                    href={`mailto:${postedBy.EMail}?subject=Inquiry%20About%20Your%20Listing&body=Hi%20${postedBy.Title},%0D%0A%0D%0AI%20am%20interested%20in%20${title}%20your%20listing.%20Could%20you%20please%20provide%20more%20details?`}
+                    className="text-blue-600 flex items-center mr-4"
+                    title="Send Email"
+                  >
+                    <FontAwesomeIcon icon={faEnvelope} className="mr-1" />
+                    <span>Email</span>
+                  </a>
 
-          {/* Posted By */}
-          <div className="flex items-center mt-6">
-            <img
-              src={avatar}
-              alt={postedBy.Title}
-              className="w-10 h-10 rounded-full mr-3"
-            />
-            <div>
-              <p className="text-gray-900 font-medium">{postedBy.Title}</p>
-              <p className="text-gray-500 text-xs">{`Posted by ${postedBy.Title}`}</p>
+                  {/* Teams Icon */}
+                  <a
+                    href={`https://teams.microsoft.com/l/chat/0/0?users=${postedBy.EMail}&message=Hi%20${postedBy.Title},%20I%20am%20interested%20in%20${title}%20your%20listing!`}
+                    className="text-blue-600 flex items-center"
+                    title="Start Microsoft Teams Chat"
+                  >
+                    <FontAwesomeIcon icon={faVideo} className="mr-1" />
+                    <span>Teams</span>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
