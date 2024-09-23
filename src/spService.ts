@@ -20,6 +20,7 @@ class SpService {
     Price: string | number;
     Location: string;
     Description: string;
+    PostedById: number;
   }): Promise<IItemAddResult> {
     try {
       return sp.web.lists
@@ -56,6 +57,16 @@ class SpService {
     }
   }
 
+  async uploadImages(ID: any, images: File[]): Promise<void> {
+    if (images.length > 0) {
+      const uploadPromises = images.map(async (image) => {
+        const fileArrayBuffer = await image.arrayBuffer();
+        await this.uploadImage(image.name, fileArrayBuffer, ID);
+      });
+      await Promise.all(uploadPromises);
+    }
+  }
+
   public async uploadImage(
     fileName: string,
     fileArrayBuffer: ArrayBuffer,
@@ -74,15 +85,6 @@ class SpService {
       .update({
         PostID: postId,
       });
-  }
-
-  uploadImages(ID: any, images: File[]): void {
-    if (images.length > 0) {
-      images.forEach(async (image) => {
-        const fileArrayBuffer = await image.arrayBuffer();
-        await this.uploadImage(image.name, fileArrayBuffer, ID);
-      });
-    }
   }
 
   public async getImages(): Promise<IImage[]> {

@@ -14,12 +14,14 @@ interface IMarketPlaceFilterProps {
   onSort: (sortBy: string) => void;
   onFilterByCategory: (category: string) => void;
   onReset: () => void;
+  currUserId: number;
 }
 
 interface IMarketPlaceFilterState {
   searchTerm: string;
   sortBy: string;
   isModalOpen: boolean;
+  currentUser: number;
 }
 
 const categories = [
@@ -42,7 +44,12 @@ export default class MarketPlaceFilter extends React.Component<
       searchTerm: "",
       sortBy: "",
       isModalOpen: false,
+      currentUser: props.currUserId,
     };
+
+    console.log("====================================");
+    console.log("MarketPlaceFilter", this.state);
+    console.log("====================================");
 
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSort = this.handleSort.bind(this);
@@ -141,7 +148,12 @@ export default class MarketPlaceFilter extends React.Component<
             Reset
           </button>
         </div>
-        {isModalOpen && <CreateProductForm onClose={this.handleCloseModal} />}
+        {isModalOpen && (
+          <CreateProductForm
+            onClose={this.handleCloseModal}
+            currentUser={this.state.currentUser}
+          />
+        )}
       </div>
     );
   }

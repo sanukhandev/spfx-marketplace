@@ -42,6 +42,7 @@ export default class MarketPlaceMain extends React.Component<
     this.handleSort = this.handleSort.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.handleFilterByCategory = this.handleFilterByCategory.bind(this);
+    // set the current user ID
   }
 
   // Grouping function for images by post ID
@@ -87,6 +88,7 @@ export default class MarketPlaceMain extends React.Component<
       });
 
       this.setState({
+        ...this.state,
         items: postsWithDetails,
         filteredItems: postsWithDetails,
       });
@@ -105,7 +107,7 @@ export default class MarketPlaceMain extends React.Component<
     const filteredItems = this.state.items.filter((item) =>
       item.Title.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    this.setState({ filteredItems });
+    this.setState({ ...this.state, filteredItems });
   }
 
   // Sort Handler
@@ -120,7 +122,7 @@ export default class MarketPlaceMain extends React.Component<
       }
       return 0;
     });
-    this.setState({ filteredItems: sortedItems });
+    this.setState({ ...this.state, filteredItems: sortedItems });
   }
 
   handleReset(): void {
@@ -131,7 +133,7 @@ export default class MarketPlaceMain extends React.Component<
     const filteredItems = this.state.items.filter(
       (item) => item.Category === category
     );
-    this.setState({ filteredItems });
+    this.setState({ ...this.state, filteredItems });
   }
 
   public render(): React.ReactElement<IMarketPlaceMainProps> {
@@ -143,6 +145,7 @@ export default class MarketPlaceMain extends React.Component<
           onSort={this.handleSort}
           onReset={this.handleReset}
           onFilterByCategory={this.handleFilterByCategory}
+          currUserId={this.props.context.pageContext.legacyPageContext.userId}
         />
         <div className="p-4 flex-1">
           <h1 className="text-xl font-bold mb-4">MarketPlace Items</h1>

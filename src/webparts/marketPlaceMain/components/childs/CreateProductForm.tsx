@@ -2,7 +2,8 @@ import * as React from "react";
 import { spService } from "../../../../spService";
 
 interface ICreateProductFormProps {
-  onClose: () => void; // Close modal handler
+  onClose: () => void; // Close modal handler\
+  currentUser: number;
 }
 
 interface ICreateProductFormState {
@@ -13,8 +14,16 @@ interface ICreateProductFormState {
   details: string;
   images: File[];
   isFree: boolean;
+  currUserId: number;
 }
-
+const categories = [
+  "Vehicle",
+  "Gadgets",
+  "Apartment",
+  "Others",
+  "Choice 6",
+  "Rental",
+];
 export default class CreateProductForm extends React.Component<
   ICreateProductFormProps,
   ICreateProductFormState
@@ -29,6 +38,7 @@ export default class CreateProductForm extends React.Component<
       details: "",
       images: [],
       isFree: false,
+      currUserId: props.currentUser,
     };
   }
 
@@ -61,6 +71,7 @@ export default class CreateProductForm extends React.Component<
         Price: isFree ? 0 : parseFloat(price),
         Location: location,
         Description: details,
+        PostedById: this.state.currUserId,
       });
       if (newItem && typeof newItem === "object" && images.length > 0) {
         await spService.uploadImages(newItem.data.ID, images);
@@ -103,11 +114,12 @@ export default class CreateProductForm extends React.Component<
               onChange={this.handleChange}
               className="w-full border rounded-lg p-2"
             >
-              <option value="">Select category</option>
-              <option value="Vehicle">Vehicle</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Furniture">Furniture</option>
-              {/* Add more categories as needed */}
+              <option value="">Select Category</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
             </select>
           </div>
 
