@@ -76,7 +76,8 @@ export default class CreateProductForm extends React.Component<
       if (newItem && typeof newItem === "object" && images.length > 0) {
         await spService.uploadImages(newItem.data.ID, images);
       }
-
+      // reload the page
+      window.location.reload();
       this.props.onClose(); // Close modal after submission
     } catch (error) {
       console.error("Error creating item: ", error);

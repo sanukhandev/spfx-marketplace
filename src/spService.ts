@@ -8,7 +8,7 @@ export interface IImage {
 class SpService {
   BUYSELLITEMS_LIST_TITLE = "BuySellItems";
   BUYSELLITEMS_IMAGES_LIST_TITLE = "BuySellItemsImages";
-  SITE = "DemoIntranet";
+  SITE = "TIPDev1";
   public setup(spfxContext: any): void {
     sp.setup({
       spfxContext,
@@ -75,14 +75,11 @@ class SpService {
     postId: number
   ): Promise<void> {
     const uploadedFile = await sp.web
-      .getFolderByServerRelativeUrl(
-        `sites/${this.SITE}/Lists/${this.BUYSELLITEMS_IMAGES_LIST_TITLE}`
-      )
+      .getFolderByServerRelativeUrl(`${this.BUYSELLITEMS_IMAGES_LIST_TITLE}`)
       .files.add(fileName, fileArrayBuffer, true);
 
     const listItemFields = await uploadedFile.file.listItemAllFields();
     const itemId = listItemFields.ID;
-
     await sp.web.lists
       .getByTitle(this.BUYSELLITEMS_IMAGES_LIST_TITLE)
       .items.getById(itemId)
